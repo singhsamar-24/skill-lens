@@ -1,0 +1,30 @@
+{
+  "Backend Engineer": {
+    "skills": ["Python", "FastAPI", "REST APIs", "PostgreSQL", "Caching", "System Design", "Testing", "Docker"],
+    "salary_range": "10-22 LPA"
+  },
+  "Frontend Engineer": {
+    "skills": ["JavaScript", "TypeScript", "React", "REST APIs", "Testing", "Tailwind CSS"],
+    "salary_range": "8-18 LPA"
+  },
+  "Full Stack Engineer": {
+    "skills": ["JavaScript", "TypeScript", "React", "Python", "FastAPI", "REST APIs", "Databases", "Testing"],
+    "salary_range": "10-24 LPA"
+  },
+  "AI Engineer": {
+    "skills": ["Python", "LLMs", "RAG", "FastAPI", "Vector Databases", "System Design", "Testing"],
+    "salary_range": "12-30 LPA"
+  },
+  "DevOps Engineer": {
+    "skills": ["Docker", "Kubernetes", "AWS", "CI/CD", "System Design", "Testing", "Monitoring"],
+    "salary_range": "9-22 LPA"
+  },
+  "Software Engineer": {
+    "skills": ["Python", "JavaScript", "REST APIs", "Data Structures", "Testing", "System Design", "Databases"],
+    "salary_range": "8-20 LPA"
+  },
+  "Data Engineer": {
+    "skills": ["Python", "SQL", "Databases", "AWS", "Data Pipelines", "Testing", "System Design"],
+    "salary_range": "10-24 LPA"
+  }
+}
