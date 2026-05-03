@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import os
 import re
 from hashlib import sha256
 from pathlib import Path
@@ -162,6 +163,8 @@ class RAGManager:
 
     @staticmethod
     def _load_model() -> object | None:
+        if os.getenv("ENABLE_SEMANTIC_RAG", "").lower() not in {"1", "true", "yes"}:
+            return None
         if SentenceTransformer is None or faiss is None:
             return None
         try:
