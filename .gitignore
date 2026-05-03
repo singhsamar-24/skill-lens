@@ -1,0 +1,111 @@
+# ==============================
+
+# Node.js (Frontend + Backend)
+
+# ==============================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env files (IMPORTANT 🔐)
+
+.env
+.env.*
+!.env.example
+
+# Logs
+
+logs/
+*.log
+
+# Build output
+
+dist/
+build/
+out/
+
+# Next.js
+
+.next/
+.next/cache/
+
+# React (CRA / Vite)
+
+.vite/
+.cache/
+
+# ==============================
+
+# Backend (Node / Express / APIs)
+
+# ==============================
+
+coverage/
+*.pid
+*.seed
+*.pid.lock
+
+# Database
+
+*.sqlite
+*.db
+
+# ==============================
+
+# OS / System files
+
+# ==============================
+
+.DS_Store
+Thumbs.db
+
+# ==============================
+
+# IDE / Editor files
+
+# ==============================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ==============================
+
+# Python (if backend ever uses it)
+
+# ==============================
+
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+
+# ==============================
+
+# Misc
+
+# ==============================
+
+*.zip
+*.tar
+*.gz
+*.rar
+
+# Temporary files
+
+tmp/
+temp/
+
+# ==============================
+
+# Docker (optional)
+
+# ==============================
+
+docker-compose.override.yml
