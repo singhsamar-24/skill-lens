@@ -3,12 +3,8 @@ import { motion } from "framer-motion";
 import { Panel } from "../components/ui";
 import { Hero } from "../components/Hero";
 import { AnalysisForm } from "../components/AnalysisForm";
-import { useAuth } from "../state/auth-store";
-import { Link } from "react-router-dom";
 
 export function Landing() {
-  const { isAuthenticated } = useAuth();
-
   const stats = [
     { label: "Knowledge Base", value: "3", detail: "Specialized RAG datasets" },
     { label: "Commit Depth", value: "30", detail: "Analyzed per repository" },

@@ -16,14 +16,6 @@ class Settings(BaseSettings):
     api_rate_limit_refill_per_minute: int = 60
     external_timeout_seconds: float = 18.0
 
-    # Auth Settings
-    github_client_id: str | None = None
-    github_client_secret: str | None = None
-    google_client_id: str | None = None
-    google_client_secret: str | None = None
-    jwt_secret: str = "skilllens-dev-secret-keep-it-safe"
-    jwt_algorithm: str = "HS256"
-    jwt_expiry_minutes: int = 60 * 24  # 24 hours
     frontend_url: str = "http://localhost:5173"
     backend_url: str = "http://localhost:8000"
 

@@ -16,20 +16,11 @@ interface ApiErrorBody {
   };
 }
 
-async function requestJson<T>(path: string, init?: RequestInit, token?: string): Promise<T> {
+async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(init?.headers as Record<string, string> ?? {}),
   };
-  
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  } else {
-    const savedToken = localStorage.getItem("skilllens_token");
-    if (savedToken) {
-      headers["Authorization"] = `Bearer ${savedToken}`;
-    }
-  }
 
   const response = await fetch(`${API_BASE}${path}`, {
     ...init,
@@ -44,7 +35,6 @@ async function requestJson<T>(path: string, init?: RequestInit, token?: string):
 
 export const api = {
   health: () => requestJson<{ status: string; rag_ready: boolean; groq_configured: boolean; rag_backend: string }>("/health"),
-  getMe: (token: string) => requestJson<{ username: string; email?: string; avatar?: string }>("/api/auth/me", {}, token),
   analyzeGitHub: (username: string) =>
     requestJson<GitHubAnalysis>("/api/github/analyze", {
       method: "POST",
@@ -53,15 +43,9 @@ export const api = {
   analyzeResume: async (file: File) => {
     const form = new FormData();
     form.append("file", file);
-    const token = localStorage.getItem("skilllens_token");
-    const headers: Record<string, string> = {};
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
-    }
     const response = await fetch(`${API_BASE}/api/resume/analyze`, {
       method: "POST",
       body: form,
-      headers
     });
     if (!response.ok) {
       const body = (await response.json().catch(() => ({}))) as ApiErrorBody;

@@ -68,7 +68,6 @@ export default function App() {
               </Suspense>
             }
           />
-          <Route path="login" element={<Navigate to="/" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

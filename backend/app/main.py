@@ -6,9 +6,8 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from starlette.middleware.sessions import SessionMiddleware
 
-from app.api import auth, compare, github, leetcode, mentor, resume, roadmap
+from app.api import compare, github, leetcode, mentor, resume, roadmap
 from app.core.cache import cache
 from app.core.rate_limit import RateLimitMiddleware
 from app.core.settings import get_settings
@@ -53,10 +52,6 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
     app.add_middleware(
-        SessionMiddleware,
-        secret_key=settings.jwt_secret,
-    )
-    app.add_middleware(
         RateLimitMiddleware,
         capacity=settings.api_rate_limit_capacity,
         refill_per_minute=settings.api_rate_limit_refill_per_minute,
@@ -90,7 +85,6 @@ def create_app() -> FastAPI:
             "cache_items": cache.size(),
         }
 
-    app.include_router(auth.router, prefix=settings.api_prefix)
     app.include_router(github.router, prefix=settings.api_prefix)
     app.include_router(resume.router, prefix=settings.api_prefix)
     app.include_router(leetcode.router, prefix=settings.api_prefix)
