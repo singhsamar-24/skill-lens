@@ -6,6 +6,7 @@ from app.models.compare import CompareResponse
 from app.models.github import GitHubAnalysis
 from app.models.leetcode import LeetCodeAnalysis
 from app.models.mentor import MentorChatResponse
+from app.models.recruiter import RecruiterEvaluateResponse, RecruiterRankResponse, RecruiterUploadResponse
 from app.models.resume import ResumeAnalysis
 from app.models.roadmap import RoadmapResponse
 from app.rag.manager import RAGManager
@@ -35,6 +36,9 @@ def test_public_api_endpoints_with_mocked_services(monkeypatch):
     comparison = CompareResponse(target_role="Software Engineer", evidence_score=42, problem_solving_signal="unknown")
     roadmap = RoadmapResponse(target_role="Software Engineer", mentor_note="mocked")
     mentor = MentorChatResponse(routed_sources=["learning"], answer="mocked", citations=[], snippets=[])
+    recruiter_upload = RecruiterUploadResponse(uploaded=1, candidates=[])
+    recruiter_evaluate = RecruiterEvaluateResponse(target_role="Software Engineer", evaluated=0, results=[])
+    recruiter_rank = RecruiterRankResponse(target_role="Software Engineer", candidates=[])
 
     class GitHubFake:
         async def analyze_user(self, username: str):
@@ -60,6 +64,16 @@ def test_public_api_endpoints_with_mocked_services(monkeypatch):
         async def chat(self, _payload):
             return mentor
 
+    class RecruiterFake:
+        async def upload_resumes(self, _files):
+            return recruiter_upload
+
+        async def evaluate_candidates(self, _target_role):
+            return recruiter_evaluate
+
+        async def rank_candidates(self, _target_role=None):
+            return recruiter_rank
+
     with TestClient(app) as client:
         app.state.github_service = GitHubFake()
         app.state.resume_service = ResumeFake()
@@ -67,6 +81,7 @@ def test_public_api_endpoints_with_mocked_services(monkeypatch):
         app.state.codeforces_service = CodeforcesFake()
         app.state.roadmap_service = RoadmapFake()
         app.state.mentor_service = MentorFake()
+        app.state.recruiter_service = RecruiterFake()
 
         assert client.post("/api/github/analyze", json={"username": "dev"}).json()["username"] == "dev"
         assert client.post("/api/resume/analyze", files={"file": ("resume.pdf", b"%PDF", "application/pdf")}).json()["file_name"] == "resume.pdf"
@@ -78,3 +93,6 @@ def test_public_api_endpoints_with_mocked_services(monkeypatch):
 
         assert client.post("/api/roadmap", json={"comparison": comparison.model_dump(), "target_role": "Software Engineer"}).json()["mentor_note"] == "mocked"
         assert client.post("/api/mentor/chat", json={"message": "how do I learn testing?"}).json()["answer"] == "mocked"
+        assert client.post("/api/recruiter/upload", files=[("files", ("resume.pdf", b"%PDF", "application/pdf"))]).json()["uploaded"] == 1
+        assert client.post("/api/recruiter/evaluate", json={"target_role": "Software Engineer"}).json()["evaluated"] == 0
+        assert client.get("/api/recruiter/rank?target_role=Software%20Engineer").json()["target_role"] == "Software Engineer"

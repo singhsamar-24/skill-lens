@@ -1,5 +1,5 @@
 import { NavLink, Outlet, Link } from "react-router-dom";
-import { BarChart3, GitCompare, GraduationCap, LayoutDashboard, MessagesSquare, Sparkles } from "lucide-react";
+import { BarChart3, GitCompare, GraduationCap, LayoutDashboard, MessagesSquare, Sparkles, UsersRound } from "lucide-react";
 import { cx } from "../lib/format";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -7,6 +7,7 @@ const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/compare", label: "Compare", icon: GitCompare },
   { to: "/roadmap", label: "Roadmap", icon: GraduationCap },
+  { to: "/recruiter", label: "Recruiter", icon: UsersRound },
   { to: "/mentor", label: "Mentor", icon: MessagesSquare },
   { to: "/insights", label: "Insights", icon: BarChart3 },
 ];

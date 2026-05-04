@@ -1,6 +1,7 @@
 # SkillLens
 
 SkillLens is a production-grade hackathon MVP that compares claimed resume skills against real GitHub evidence, optional LeetCode and Codeforces data, and a multi-source RAG mentor system.
+It also includes a recruiter dashboard for bulk resume upload, PostgreSQL-backed candidate storage, target-role evaluation, and ranked candidate shortlists.
 
 ## Stack
 
@@ -19,6 +20,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 Set `GROQ_API_KEY` for resume parsing, roadmap generation, and mentor chat. Set `GITHUB_TOKEN` to improve GitHub API rate limits.
+Set `DATABASE_URL` to enable the recruiter dashboard persistence layer. The backend auto-creates and seeds recruiter tables on startup.
 
 ## Run Frontend
 

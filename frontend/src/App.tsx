@@ -10,6 +10,7 @@ const Compare = lazy(() => import("./pages/Compare").then((module) => ({ default
 const Roadmap = lazy(() => import("./pages/Roadmap").then((module) => ({ default: module.Roadmap })));
 const Mentor = lazy(() => import("./pages/Mentor").then((module) => ({ default: module.Mentor })));
 const Insights = lazy(() => import("./pages/Insights").then((module) => ({ default: module.Insights })));
+const Recruiter = lazy(() => import("./pages/Recruiter").then((module) => ({ default: module.Recruiter })));
 
 function RouteFallback() {
   return (
@@ -65,6 +66,14 @@ export default function App() {
             element={
               <Suspense fallback={<RouteFallback />}>
                 <Insights />
+              </Suspense>
+            }
+          />
+          <Route
+            path="recruiter"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <Recruiter />
               </Suspense>
             }
           />

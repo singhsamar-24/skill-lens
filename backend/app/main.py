@@ -7,8 +7,9 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api import codeforces, compare, github, leetcode, mentor, resume, roadmap
+from app.api import codeforces, compare, github, leetcode, mentor, recruiter, resume, roadmap
 from app.core.cache import cache
+from app.core.db import create_engine, create_session_factory, init_db
 from app.core.rate_limit import RateLimitMiddleware
 from app.core.settings import get_settings
 from app.rag.manager import RAGManager
@@ -18,6 +19,7 @@ from app.services.github_service import GitHubService
 from app.services.groq_service import GroqService
 from app.services.leetcode_service import LeetCodeService
 from app.services.mentor_service import MentorService
+from app.services.recruiter_service import RecruiterService
 from app.services.resume_service import ResumeService
 from app.services.roadmap_service import RoadmapService
 
@@ -29,17 +31,32 @@ async def lifespan(app: FastAPI):
     rag.build()
 
     groq_service = GroqService(settings)
+    db_engine = create_engine(settings)
+    db_session_factory = create_session_factory(db_engine)
+    await init_db(db_engine, db_session_factory)
+
+    github_service = GitHubService(settings)
+    resume_service = ResumeService(settings, groq_service)
+    compare_service = CompareService(groq_service)
+
     app.state.settings = settings
     app.state.rag = rag
     app.state.groq_service = groq_service
-    app.state.github_service = GitHubService(settings)
-    app.state.resume_service = ResumeService(settings, groq_service)
+    app.state.db_engine = db_engine
+    app.state.db_session_factory = db_session_factory
+    app.state.github_service = github_service
+    app.state.resume_service = resume_service
     app.state.leetcode_service = LeetCodeService(settings)
     app.state.codeforces_service = CodeforcesService(settings)
-    app.state.compare_service = CompareService(groq_service)
+    app.state.compare_service = compare_service
     app.state.roadmap_service = RoadmapService(groq_service, rag)
     app.state.mentor_service = MentorService(rag, groq_service)
-    yield
+    app.state.recruiter_service = RecruiterService(db_session_factory, resume_service, compare_service, github_service)
+    try:
+        yield
+    finally:
+        if db_engine:
+            await db_engine.dispose()
 
 
 def create_app() -> FastAPI:
@@ -84,6 +101,7 @@ def create_app() -> FastAPI:
             "rag_backend": getattr(rag, "backend", "unknown"),
             "github_token_configured": bool(settings.github_token),
             "groq_configured": bool(settings.groq_api_key),
+            "database_configured": bool(settings.database_url),
             "cache_items": cache.size(),
         }
 
@@ -94,6 +112,7 @@ def create_app() -> FastAPI:
     app.include_router(compare.router, prefix=settings.api_prefix)
     app.include_router(roadmap.router, prefix=settings.api_prefix)
     app.include_router(mentor.router, prefix=settings.api_prefix)
+    app.include_router(recruiter.router, prefix=settings.api_prefix)
     return app
 
 

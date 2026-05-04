@@ -48,6 +48,10 @@ class ResumeService:
             raise bad_request("resume_invalid_type", "Resume upload must be a PDF file.")
 
         content = await file.read()
+        analysis, _ = await self.analyze_pdf_bytes(filename, content)
+        return analysis
+
+    async def analyze_pdf_bytes(self, filename: str, content: bytes) -> tuple[ResumeAnalysis, str]:
         if len(content) > self.settings.max_resume_bytes:
             raise bad_request("resume_too_large", "Resume PDF exceeds the configured size limit.")
         if not content:
@@ -57,7 +61,7 @@ class ResumeService:
         cache_key = f"resume:{file_hash}"
         cached = cache.get(cache_key)
         if isinstance(cached, ResumeAnalysis):
-            return cached
+            return cached, cached.text_preview
 
         text = self._extract_pdf_text(content)
         if len(text.strip()) < 40:
@@ -98,7 +102,7 @@ class ResumeService:
             warnings=warnings,
         )
         cache.set(cache_key, analysis, ttl_seconds=15 * 60)
-        return analysis
+        return analysis, text
 
     @staticmethod
     def _parse_with_keywords(text: str) -> _LLMResumeResponse:

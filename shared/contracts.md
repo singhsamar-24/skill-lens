@@ -11,5 +11,8 @@ Frontend TypeScript interfaces in `frontend/src/types.ts` mirror those models fo
 - `CompareResponse`
 - `RoadmapResponse`
 - `MentorChatResponse`
+- `RecruiterUploadResponse`
+- `RecruiterEvaluateResponse`
+- `RecruiterRankResponse`
 
 Contract changes should be made in backend models first, then reflected in frontend types and API rendering components.

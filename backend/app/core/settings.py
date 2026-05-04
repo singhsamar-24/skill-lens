@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     api_rate_limit_capacity: int = 120
     api_rate_limit_refill_per_minute: int = 60
     external_timeout_seconds: float = 18.0
+    database_url: str | None = None
+    db_pool_size: int = 5
+    db_max_overflow: int = 10
 
     frontend_url: str = "http://localhost:5173"
     backend_url: str = "http://localhost:8000"

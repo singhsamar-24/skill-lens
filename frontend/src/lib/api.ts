@@ -4,6 +4,9 @@ import type {
   GitHubAnalysis,
   LeetCodeAnalysis,
   MentorChatResponse,
+  RecruiterEvaluateResponse,
+  RecruiterRankResponse,
+  RecruiterUploadResponse,
   ResumeAnalysis,
   RoadmapResponse,
 } from "../types";
@@ -92,4 +95,29 @@ export const api = {
       method: "POST",
       body: JSON.stringify(payload),
     }),
+  recruiterUpload: async (files: File[]) => {
+    const form = new FormData();
+    files.forEach((file) => form.append("files", file));
+    const response = await fetch(`${API_BASE}/api/recruiter/upload`, {
+      method: "POST",
+      body: form,
+    }).catch((error: Error) => {
+      const target = API_BASE || "the same-origin API proxy";
+      throw new Error(`Cannot reach backend API at ${target}. Check the backend deployment. (${error.message})`);
+    });
+    if (!response.ok) {
+      const body = (await response.json().catch(() => ({}))) as ApiErrorBody;
+      throw new Error(body.detail?.message ?? "Recruiter upload failed.");
+    }
+    return (await response.json()) as RecruiterUploadResponse;
+  },
+  recruiterEvaluate: (payload: { target_role: string }) =>
+    requestJson<RecruiterEvaluateResponse>("/api/recruiter/evaluate", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  recruiterRank: (targetRole?: string) => {
+    const query = targetRole ? `?target_role=${encodeURIComponent(targetRole)}` : "";
+    return requestJson<RecruiterRankResponse>(`/api/recruiter/rank${query}`);
+  },
 };

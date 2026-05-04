@@ -143,3 +143,60 @@ export interface MentorChatResponse {
   citations: string[];
   snippets: { source: RagSource; source_label: string; title: string; text: string; score: number; chunk_id: string; metadata: Record<string, unknown> }[];
 }
+
+export interface RecruiterCandidateSummary {
+  id: number;
+  name: string;
+  email?: string | null;
+  github_username?: string | null;
+  skills: ResumeSkill[];
+}
+
+export interface RecruiterUploadResponse {
+  uploaded: number;
+  candidates: RecruiterCandidateSummary[];
+}
+
+export interface RecruiterEvaluationResult {
+  candidate_id: number;
+  name: string;
+  email?: string | null;
+  github_username?: string | null;
+  target_role: string;
+  match_score: number;
+  verified_skills: ComparedSkill[];
+  missing_skills: CompareResponse["missing_skills"];
+  explanations: {
+    insights?: CompareResponse["insights"];
+    recommendations?: string[];
+    claimed_unproven_skills?: ComparedSkill[];
+    github_only_skills?: ComparedSkill[];
+    problem_solving_signal?: string;
+  };
+  role_matches: CompareResponse["career_matches"];
+}
+
+export interface RecruiterEvaluateResponse {
+  target_role: string;
+  evaluated: number;
+  results: RecruiterEvaluationResult[];
+}
+
+export interface RecruiterRankItem {
+  rank: number;
+  candidate_id: number;
+  name: string;
+  email?: string | null;
+  github_username?: string | null;
+  target_role: string;
+  match_score: number;
+  top_verified_skills: string[];
+  top_missing_skills: string[];
+  recommendation: Priority;
+  explanations: RecruiterEvaluationResult["explanations"];
+}
+
+export interface RecruiterRankResponse {
+  target_role?: string | null;
+  candidates: RecruiterRankItem[];
+}
