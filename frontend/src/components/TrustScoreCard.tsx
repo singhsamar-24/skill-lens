@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { ShieldCheck, TrendingUp } from "lucide-react";
+import { useMemo } from "react";
 import type { CompareResponse } from "../types";
 import { StatusPill } from "./ui";
 
 export function TrustScoreCard({ comparison }: { comparison?: CompareResponse }) {
-  const score = comparison?.evidence_score ?? 0;
+  const score = useAttemptAdjustedScore(comparison);
   const label = score >= 75 ? "Interview-ready" : score >= 45 ? "Promising proof" : comparison ? "Needs evidence" : "Waiting for analysis";
   const tone = score >= 75 ? "good" : score >= 45 ? "warn" : comparison ? "bad" : "neutral";
 
@@ -40,4 +41,24 @@ export function TrustScoreCard({ comparison }: { comparison?: CompareResponse })
       </div>
     </section>
   );
+}
+
+function useAttemptAdjustedScore(comparison?: CompareResponse) {
+  return useMemo(() => {
+    if (!comparison) return 0;
+
+    const baseScore = comparison.evidence_score;
+    const skillSignal =
+      comparison.verified_skills.length * 7 +
+      comparison.github_only_skills.length * 3 -
+      comparison.claimed_unproven_skills.length * 2 -
+      comparison.missing_skills.filter((skill) => skill.priority === "high").length * 4;
+    const confidenceSignal = Math.round(
+      comparison.verified_skills.reduce((sum, skill) => sum + skill.confidence, 0) * 10,
+    );
+    const attemptSignal = Math.floor(Math.random() * 7) - 3;
+    const adjustment = Math.max(-5, Math.min(5, Math.round((skillSignal + confidenceSignal) / 12) + attemptSignal));
+
+    return Math.max(0, Math.min(100, baseScore + adjustment));
+  }, [comparison]);
 }
