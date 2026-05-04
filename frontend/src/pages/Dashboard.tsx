@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { AlertCircle, Code2, Github, Trophy } from "lucide-react";
+import { AlertCircle, Code2, ExternalLink, GitFork, Github, Star, Trophy } from "lucide-react";
 import { AnalysisForm } from "../components/AnalysisForm";
 import { InsightPanel } from "../components/InsightPanel";
 import { SkillBadge } from "../components/SkillBadge";
@@ -135,32 +135,50 @@ export function Dashboard() {
         <Panel>
           <SectionTitle kicker="Deep Scan" title="Repository Intel" description="The most impactful projects analyzed during verification." />
           {github ? (
-            <div className="space-y-4">
-              {github.analyzed_repos.slice(0, 6).map((repo) => (
+            github.analyzed_repos.length ? (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+              {github.analyzed_repos.slice(0, 6).map((repo, index) => (
                 <a
                   key={repo.full_name}
                   href={repo.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="group block rounded-2xl border border-line p-5 transition-all hover:border-accent/40 hover:bg-slate-50 hover:shadow-soft"
+                  className="group flex min-h-48 flex-col rounded-2xl border border-line bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:bg-slate-50 hover:shadow-soft"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <p className="font-bold text-ink group-hover:text-accent transition-colors">{repo.full_name}</p>
-                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted font-medium">{repo.description ?? repo.readme_excerpt ?? "Repository evidence analyzed"}</p>
+                  <div className="flex items-start gap-4">
+                    <div className="min-w-0 flex-1">
+                      <p className="break-words text-sm font-bold leading-snug text-ink transition-colors group-hover:text-accent">{repo.full_name}</p>
+                      <p className="mt-2 line-clamp-3 text-sm font-medium leading-relaxed text-muted">{repo.description ?? repo.readme_excerpt ?? "Repository evidence analyzed"}</p>
                     </div>
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-accent group-hover:bg-accent group-hover:text-white transition-all">
-                      <Code2 size={20} />
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-accent transition-all group-hover:bg-accent group-hover:text-white">
+                      <ExternalLink size={18} />
                     </div>
                   </div>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {Object.keys(repo.languages).slice(0, 4).map(lang => (
-                      <span key={lang} className="text-[10px] font-bold uppercase tracking-wider text-muted/60">{lang}</span>
+                      <span key={lang} className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-600">{lang}</span>
                     ))}
+                    {!Object.keys(repo.languages).length ? (
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">Code scan</span>
+                    ) : null}
+                  </div>
+                  <div className="mt-auto flex items-center justify-between border-t border-line pt-4 text-xs font-bold text-muted">
+                    <span className="inline-flex items-center gap-1.5">
+                      <Star size={14} />
+                      {compactNumber(repo.stars)}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <GitFork size={14} />
+                      {compactNumber(repo.forks)}
+                    </span>
+                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] uppercase tracking-widest">#{index + 1}</span>
                   </div>
                 </a>
               ))}
             </div>
+            ) : (
+              <EmptyState icon={Code2} title="No repositories analyzed" body="SkillLens did not find eligible public repositories for this profile." />
+            )
           ) : (
             <EmptyState title="Repositories will appear here" body="SkillLens limits repository reads to stay friendly to GitHub API budgets." />
           )}

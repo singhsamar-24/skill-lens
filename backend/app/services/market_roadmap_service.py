@@ -26,6 +26,23 @@ class _LLMMarketRoadmap(BaseModel):
 
 
 class MarketRoadmapService:
+    CAREER_LINKS = {
+        "Amazon": "https://www.amazon.jobs/en/teams/in",
+        "Razorpay": "https://razorpay.com/jobs/",
+        "Flipkart": "https://www.flipkartcareers.com/",
+        "Swiggy": "https://careers.swiggy.com/",
+        "Zerodha": "https://zerodha.com/careers/",
+        "Meesho": "https://www.meesho.io/careers",
+        "CRED": "https://careers.cred.club/",
+        "BrowserStack": "https://www.browserstack.com/careers",
+        "Zoho": "https://www.zoho.com/careers/",
+        "Freshworks": "https://www.freshworks.com/company/careers/",
+        "Atlassian India": "https://www.atlassian.com/company/careers",
+        "PhonePe": "https://www.phonepe.com/careers/",
+        "Dream11": "https://www.dreamsports.group/careers/",
+        "Zomato": "https://www.zomato.com/careers",
+    }
+
     def __init__(self, groq: GroqService | None, dataset_path: Path | None = None) -> None:
         self.groq = groq
         self.dataset_path = dataset_path or Path(__file__).resolve().parents[1] / "data" / "company_profiles.json"
@@ -99,6 +116,7 @@ class MarketRoadmapService:
                     company=str(profile.get("company", "")),
                     fit=fit,
                     salary=str(profile.get("salary_range", "Market dependent")),
+                    apply_link=self._apply_link(profile),
                     process=[str(item) for item in profile.get("hiring_process", [])],
                     gaps=gaps[:5],
                     prep_plan=self._prep_plan(gaps, profile),
@@ -138,6 +156,14 @@ class MarketRoadmapService:
             "Week 3: run mock interviews for DSA, machine coding, and the company-specific design themes.",
         ]
         return [*tips[:1], *plan][:4]
+
+    @classmethod
+    def _apply_link(cls, profile: dict[str, Any]) -> str | None:
+        explicit = profile.get("apply_link")
+        if isinstance(explicit, str) and explicit.startswith(("https://", "http://")):
+            return explicit
+        company = str(profile.get("company", ""))
+        return cls.CAREER_LINKS.get(company)
 
     @staticmethod
     def _skill_strengths(user_skills: list[str | MarketUserSkill]) -> dict[str, float]:

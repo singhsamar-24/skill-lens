@@ -62,6 +62,7 @@ def test_market_roadmap_scores_company_fit_from_user_skills():
     assert response.companies
     assert response.companies[0].fit > 0
     assert response.companies[0].salary
+    assert response.companies[0].apply_link
     assert response.companies[0].process
     assert response.companies[0].prep_plan
 

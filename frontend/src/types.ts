@@ -140,6 +140,7 @@ export interface MarketCompanyRoadmap {
   company: string;
   fit: number;
   salary: string;
+  apply_link?: string | null;
   process: string[];
   gaps: string[];
   prep_plan: string[];

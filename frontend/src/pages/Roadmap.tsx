@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { Building2, ChevronRight, GraduationCap, Sparkles, Target } from "lucide-react";
+import { Building2, ChevronRight, ExternalLink, GraduationCap, Send, Sparkles, Target } from "lucide-react";
 import { RoadmapTimeline } from "../components/RoadmapTimeline";
 import { Button, EmptyState, Page, Panel, SectionTitle, SkeletonBlock, StatusPill } from "../components/ui";
 import { priorityClass } from "../lib/format";
@@ -189,7 +189,7 @@ export function Roadmap() {
                   <CompanyCard key={company.company} company={company} active={selectedCompany?.company === company.company} index={index} onClick={() => setSelectedCompany(company)} />
                 ))}
               </div>
-              <CompanyDetail company={selectedCompany ?? market.companies[0]} />
+              <CompanyDetail company={selectedCompany ?? market.companies[0]} role={comparison.target_role} />
             </div>
           ) : (
             <EmptyState icon={Building2} title="No company map yet" body="Run a comparison first so SkillLens can map your skills to hiring companies." />
@@ -239,7 +239,9 @@ function CompanyCard({ company, active, index, onClick }: { company: MarketCompa
   );
 }
 
-function CompanyDetail({ company }: { company: MarketCompanyRoadmap }) {
+function CompanyDetail({ company, role }: { company: MarketCompanyRoadmap; role: string }) {
+  const applyLink = company.apply_link || `https://www.google.com/search?q=${encodeURIComponent(`${company.company} ${role} jobs`)}`;
+
   return (
     <aside className="rounded-lg border border-line bg-slate-50/60 p-6">
       <div className="flex items-start justify-between gap-4">
@@ -253,6 +255,16 @@ function CompanyDetail({ company }: { company: MarketCompanyRoadmap }) {
           <p className="text-[10px] font-bold uppercase tracking-widest text-muted">Fit</p>
         </div>
       </div>
+      <a
+        href={applyLink}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-ink px-5 text-sm font-bold text-white shadow-soft transition-all hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-xl active:translate-y-0 sm:w-auto"
+      >
+        <Send size={16} />
+        Apply Now
+        <ExternalLink size={14} />
+      </a>
 
       <DetailSection title="Skill gaps" icon={<Target size={16} />}>
         <div className="flex flex-wrap gap-2">
@@ -274,9 +286,16 @@ function CompanyDetail({ company }: { company: MarketCompanyRoadmap }) {
       <DetailSection title="Likely question themes">
         <div className="flex flex-wrap gap-2">
           {company.question_themes.map((theme) => (
-            <span key={theme} className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-700">
+            <a
+              key={theme}
+              href={`https://www.youtube.com/results?search_query=${encodeURIComponent(`${theme} interview questions`)}`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-bold text-blue-700 transition-all hover:-translate-y-0.5 hover:border-blue-300 hover:bg-white hover:shadow-sm"
+            >
               {theme}
-            </span>
+              <ExternalLink size={12} />
+            </a>
           ))}
         </div>
       </DetailSection>

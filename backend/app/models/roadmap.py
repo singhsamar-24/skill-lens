@@ -44,6 +44,7 @@ class MarketCompanyRoadmap(BaseModel):
     company: str
     fit: int = Field(ge=0, le=100)
     salary: str
+    apply_link: str | None = None
     process: list[str] = Field(default_factory=list)
     gaps: list[str] = Field(default_factory=list)
     prep_plan: list[str] = Field(default_factory=list)
