@@ -7,6 +7,7 @@ Frontend TypeScript interfaces in `frontend/src/types.ts` mirror those models fo
 - `GitHubAnalysis`
 - `ResumeAnalysis`
 - `LeetCodeAnalysis`
+- `CodeforcesAnalysis`
 - `CompareResponse`
 - `RoadmapResponse`
 - `MentorChatResponse`

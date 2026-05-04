@@ -7,12 +7,13 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api import compare, github, leetcode, mentor, resume, roadmap
+from app.api import codeforces, compare, github, leetcode, mentor, resume, roadmap
 from app.core.cache import cache
 from app.core.rate_limit import RateLimitMiddleware
 from app.core.settings import get_settings
 from app.rag.manager import RAGManager
 from app.services.compare_service import CompareService
+from app.services.codeforces_service import CodeforcesService
 from app.services.github_service import GitHubService
 from app.services.groq_service import GroqService
 from app.services.leetcode_service import LeetCodeService
@@ -34,6 +35,7 @@ async def lifespan(app: FastAPI):
     app.state.github_service = GitHubService(settings)
     app.state.resume_service = ResumeService(settings, groq_service)
     app.state.leetcode_service = LeetCodeService(settings)
+    app.state.codeforces_service = CodeforcesService(settings)
     app.state.compare_service = CompareService(groq_service)
     app.state.roadmap_service = RoadmapService(groq_service, rag)
     app.state.mentor_service = MentorService(rag, groq_service)
@@ -88,6 +90,7 @@ def create_app() -> FastAPI:
     app.include_router(github.router, prefix=settings.api_prefix)
     app.include_router(resume.router, prefix=settings.api_prefix)
     app.include_router(leetcode.router, prefix=settings.api_prefix)
+    app.include_router(codeforces.router, prefix=settings.api_prefix)
     app.include_router(compare.router, prefix=settings.api_prefix)
     app.include_router(roadmap.router, prefix=settings.api_prefix)
     app.include_router(mentor.router, prefix=settings.api_prefix)

@@ -6,6 +6,7 @@ const labels = {
   github: "GitHub",
   resume: "Resume",
   leetcode: "LeetCode",
+  codeforces: "Codeforces",
   compare: "Compare",
   roadmap: "Roadmap",
 };
@@ -13,7 +14,7 @@ const labels = {
 export function StatusRail() {
   const { statuses } = useAnalysis();
   return (
-    <div className="grid gap-2 sm:grid-cols-5">
+    <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
       {Object.entries(statuses).map(([key, status]) => (
         <div key={key} className="flex items-center gap-2 rounded-lg border border-line bg-white px-3 py-2 text-sm">
           {status === "loading" ? <Loader2 className="animate-spin text-accent" size={16} /> : null}

@@ -63,6 +63,6 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             return 8.0
         if "mentor" in path:
             return 5.0
-        if "github" in path or "leetcode" in path:
+        if "github" in path or "leetcode" in path or "codeforces" in path:
             return 3.0
         return 1.0

@@ -88,6 +88,25 @@ export interface LeetCodeAnalysis {
   warning?: string | null;
 }
 
+export interface CodeforcesAnalysis {
+  username: string;
+  status: "ok" | "unavailable";
+  handle?: string | null;
+  rank?: string | null;
+  rating?: number | null;
+  max_rank?: string | null;
+  max_rating?: number | null;
+  contribution?: number | null;
+  friend_of_count?: number | null;
+  contests: number;
+  solved_count: number;
+  attempted_count: number;
+  accepted_submissions: number;
+  topics: { topic: string; solved: number }[];
+  problem_solving_signal: "strong" | "moderate" | "emerging" | "unknown";
+  warning?: string | null;
+}
+
 export interface ComparedSkill {
   name: string;
   confidence: number;

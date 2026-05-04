@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Literal
 from app.models.common import EvidenceItem, Priority
+from app.models.codeforces import CodeforcesAnalysis
 from app.models.github import GitHubAnalysis
 from app.models.leetcode import LeetCodeAnalysis
 from app.models.resume import ResumeAnalysis
@@ -10,6 +11,7 @@ class CompareRequest(BaseModel):
     github: GitHubAnalysis
     resume: ResumeAnalysis
     leetcode: LeetCodeAnalysis | None = None
+    codeforces: CodeforcesAnalysis | None = None
     target_role: str | None = "Software Engineer"
 
 

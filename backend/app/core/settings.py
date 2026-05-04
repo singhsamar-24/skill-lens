@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     groq_model: str = "llama-3.3-70b-versatile"
     github_api_base: str = "https://api.github.com"
     leetcode_graphql_url: str = "https://leetcode.com/graphql"
+    codeforces_api_base: str = "https://codeforces.com/api"
     max_resume_bytes: int = 5 * 1024 * 1024
     api_rate_limit_capacity: int = 120
     api_rate_limit_refill_per_minute: int = 60

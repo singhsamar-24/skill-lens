@@ -1,11 +1,11 @@
 # SkillLens
 
-SkillLens is a production-grade hackathon MVP that compares claimed resume skills against real GitHub evidence, optional LeetCode data, and a multi-source RAG mentor system.
+SkillLens is a production-grade hackathon MVP that compares claimed resume skills against real GitHub evidence, optional LeetCode and Codeforces data, and a multi-source RAG mentor system.
 
 ## Stack
 
 - Frontend: React 19, TypeScript, Vite, Tailwind CSS, Framer Motion
-- Backend: FastAPI, Groq `llama-3.3-70b-versatile`, GitHub REST, FAISS, sentence-transformers
+- Backend: FastAPI, Groq `llama-3.3-70b-versatile`, GitHub REST, LeetCode GraphQL, Codeforces API, FAISS, sentence-transformers
 
 ## Run Backend
 

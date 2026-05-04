@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Code2, Github, AlertCircle } from "lucide-react";
+import { AlertCircle, Code2, Github, Trophy } from "lucide-react";
 import { AnalysisForm } from "../components/AnalysisForm";
 import { InsightPanel } from "../components/InsightPanel";
 import { SkillBadge } from "../components/SkillBadge";
@@ -11,7 +11,7 @@ import { compactNumber, cx } from "../lib/format";
 import { useAnalysis } from "../state/analysis-store";
 
 export function Dashboard() {
-  const { github, resume, leetcode, comparison, statuses, errors } = useAnalysis();
+  const { github, resume, leetcode, codeforces, comparison, statuses, errors } = useAnalysis();
   const loading = Object.values(statuses).some((status) => status === "loading");
 
   return (
@@ -167,7 +167,7 @@ export function Dashboard() {
         </Panel>
 
         <Panel>
-          <SectionTitle kicker="Algorithmic" title="Problem Solving" description="Competitive programming signals from your LeetCode profile." />
+          <SectionTitle kicker="Algorithmic" title="LeetCode Signal" description="Competitive programming signals from your LeetCode profile." />
           {leetcode?.status === "ok" ? (
             <div className="space-y-8">
               <div className="grid grid-cols-3 gap-4">
@@ -188,6 +188,44 @@ export function Dashboard() {
             </div>
           ) : (
             <EmptyState title="Optional signal" body={leetcode?.warning ?? "Add a LeetCode username to include solved count, difficulty mix, and topics."} />
+          )}
+        </Panel>
+
+        <Panel>
+          <SectionTitle kicker="Competitive" title="Codeforces Signal" description="Contest history and accepted problem coverage from your Codeforces handle." />
+          {codeforces?.status === "ok" ? (
+            <div className="space-y-8">
+              <div className="grid grid-cols-3 gap-4">
+                <MetricMini label="Solved" value={codeforces.solved_count} color="text-emerald-500" />
+                <MetricMini label="Rating" value={codeforces.rating ?? 0} color="text-sky-500" />
+                <MetricMini label="Contests" value={codeforces.contests} color="text-violet-500" />
+              </div>
+              <div className="rounded-2xl border border-line bg-slate-50/50 p-5">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-white text-accent">
+                    <Trophy size={18} />
+                  </div>
+                  <div>
+                    <p className="font-bold text-ink">{codeforces.handle ?? codeforces.username}</p>
+                    <p className="text-sm font-medium text-muted">
+                      {codeforces.rank ?? "unrated"} · max {codeforces.max_rating ?? codeforces.rating ?? "unrated"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p className="mb-4 text-xs font-bold uppercase tracking-widest text-muted">Accepted Tags</p>
+                <div className="flex flex-wrap gap-2">
+                  {codeforces.topics.slice(0, 10).map((topic) => (
+                    <span key={topic.topic} className="rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-bold text-ink transition-colors hover:bg-accent hover:text-white">
+                      {topic.topic}: <span className="opacity-60">{compactNumber(topic.solved)}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <EmptyState title="Optional signal" body={codeforces?.warning ?? "Add a Codeforces handle to include contests, rating, solved count, and accepted tags."} />
           )}
         </Panel>
       </div>

@@ -11,6 +11,7 @@ export function AnalysisForm({ compact = false }: { compact?: boolean }) {
   const { runAnalysis, statuses } = useAnalysis();
   const [githubUsername, setGithubUsername] = useState("");
   const [leetcodeUsername, setLeetcodeUsername] = useState("");
+  const [codeforcesUsername, setCodeforcesUsername] = useState("");
   const [targetRole, setTargetRole] = useState("Software Engineer");
   const [resumeFile, setResumeFile] = useState<File>();
   const loading = Object.values(statuses).some((status) => status === "loading");
@@ -19,7 +20,13 @@ export function AnalysisForm({ compact = false }: { compact?: boolean }) {
     event.preventDefault();
     if (!resumeFile || !githubUsername.trim()) return;
     navigate("/dashboard");
-    await runAnalysis({ githubUsername: githubUsername.trim(), leetcodeUsername: leetcodeUsername.trim(), targetRole, resumeFile });
+    await runAnalysis({
+      githubUsername: githubUsername.trim(),
+      leetcodeUsername: leetcodeUsername.trim(),
+      codeforcesUsername: codeforcesUsername.trim(),
+      targetRole,
+      resumeFile,
+    });
   }
 
   const inputClasses = "h-14 w-full rounded-2xl border border-transparent bg-slate-50 px-5 text-base font-medium transition-all placeholder:text-slate-400 hover:bg-slate-100 focus:border-ink/20 focus:bg-white focus:shadow-xl focus:outline-none";
@@ -57,7 +64,7 @@ export function AnalysisForm({ compact = false }: { compact?: boolean }) {
         </label>
         <UploadDropzone file={resumeFile} onChange={setResumeFile} />
       </div>
-      
+
       <div className={`${compact ? '' : 'lg:col-span-2'} space-y-3`}>
         <label className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-muted">
           LeetCode Profile <span className="opacity-50">(Optional)</span>
@@ -66,6 +73,18 @@ export function AnalysisForm({ compact = false }: { compact?: boolean }) {
           value={leetcodeUsername}
           onChange={(event) => setLeetcodeUsername(event.target.value)}
           placeholder="username"
+          className={inputClasses}
+        />
+      </div>
+
+      <div className={`${compact ? '' : 'lg:col-span-2'} space-y-3`}>
+        <label className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-muted">
+          Codeforces Profile <span className="opacity-50">(Optional)</span>
+        </label>
+        <input
+          value={codeforcesUsername}
+          onChange={(event) => setCodeforcesUsername(event.target.value)}
+          placeholder="handle"
           className={inputClasses}
         />
       </div>

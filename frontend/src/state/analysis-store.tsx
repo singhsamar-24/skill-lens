@@ -1,12 +1,13 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import { api } from "../lib/api";
-import type { CompareResponse, GitHubAnalysis, LeetCodeAnalysis, ResumeAnalysis, RoadmapResponse } from "../types";
+import type { CodeforcesAnalysis, CompareResponse, GitHubAnalysis, LeetCodeAnalysis, ResumeAnalysis, RoadmapResponse } from "../types";
 
 type Status = "idle" | "loading" | "ready" | "error";
 
 interface RunInput {
   githubUsername: string;
   leetcodeUsername?: string;
+  codeforcesUsername?: string;
   targetRole: string;
   resumeFile: File;
 }
@@ -15,10 +16,11 @@ interface AnalysisState {
   github?: GitHubAnalysis;
   resume?: ResumeAnalysis;
   leetcode?: LeetCodeAnalysis;
+  codeforces?: CodeforcesAnalysis;
   comparison?: CompareResponse;
   roadmap?: RoadmapResponse;
   targetRole: string;
-  statuses: Record<"github" | "resume" | "leetcode" | "compare" | "roadmap", Status>;
+  statuses: Record<"github" | "resume" | "leetcode" | "codeforces" | "compare" | "roadmap", Status>;
   errors: string[];
   runAnalysis: (input: RunInput) => Promise<void>;
   generateRoadmap: () => Promise<void>;
@@ -29,6 +31,7 @@ const initialStatuses: AnalysisState["statuses"] = {
   github: "idle",
   resume: "idle",
   leetcode: "idle",
+  codeforces: "idle",
   compare: "idle",
   roadmap: "idle",
 };
@@ -39,6 +42,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
   const [github, setGithub] = useState<GitHubAnalysis>();
   const [resume, setResume] = useState<ResumeAnalysis>();
   const [leetcode, setLeetcode] = useState<LeetCodeAnalysis>();
+  const [codeforces, setCodeforces] = useState<CodeforcesAnalysis>();
   const [comparison, setComparison] = useState<CompareResponse>();
   const [roadmap, setRoadmap] = useState<RoadmapResponse>();
   const [targetRole, setTargetRole] = useState("Software Engineer");
@@ -54,10 +58,13 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
     setErrors([]);
     setComparison(undefined);
     setRoadmap(undefined);
+    setLeetcode(undefined);
+    setCodeforces(undefined);
     setStatuses({
       github: "loading",
       resume: "loading",
       leetcode: input.leetcodeUsername ? "loading" : "idle",
+      codeforces: input.codeforcesUsername ? "loading" : "idle",
       compare: "idle",
       roadmap: "idle",
     });
@@ -65,6 +72,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
     let nextGithub: GitHubAnalysis | undefined;
     let nextResume: ResumeAnalysis | undefined;
     let nextLeetcode: LeetCodeAnalysis | undefined;
+    let nextCodeforces: CodeforcesAnalysis | undefined;
 
     const githubPromise = api
       .analyzeGitHub(input.githubUsername)
@@ -104,7 +112,21 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
           })
       : Promise.resolve();
 
-    await Promise.all([githubPromise, resumePromise, leetcodePromise]);
+    const codeforcesPromise = input.codeforcesUsername
+      ? api
+          .analyzeCodeforces(input.codeforcesUsername)
+          .then((result) => {
+            nextCodeforces = result;
+            setCodeforces(result);
+            setStatus("codeforces", "ready");
+          })
+          .catch((error: Error) => {
+            setStatus("codeforces", "error");
+            setErrors((current) => [...current, `Codeforces: ${error.message}`]);
+          })
+      : Promise.resolve();
+
+    await Promise.all([githubPromise, resumePromise, leetcodePromise, codeforcesPromise]);
 
     if (nextGithub && nextResume) {
       setStatus("compare", "loading");
@@ -113,6 +135,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
           github: nextGithub,
           resume: nextResume,
           leetcode: nextLeetcode,
+          codeforces: nextCodeforces,
           target_role: input.targetRole,
         });
         setComparison(result);
@@ -141,6 +164,7 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
     setGithub(undefined);
     setResume(undefined);
     setLeetcode(undefined);
+    setCodeforces(undefined);
     setComparison(undefined);
     setRoadmap(undefined);
     setStatuses(initialStatuses);
@@ -149,8 +173,8 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ github, resume, leetcode, comparison, roadmap, targetRole, statuses, errors, runAnalysis, generateRoadmap, reset }),
-    [github, resume, leetcode, comparison, roadmap, targetRole, statuses, errors],
+    () => ({ github, resume, leetcode, codeforces, comparison, roadmap, targetRole, statuses, errors, runAnalysis, generateRoadmap, reset }),
+    [github, resume, leetcode, codeforces, comparison, roadmap, targetRole, statuses, errors],
   );
 
   return <AnalysisContext.Provider value={value}>{children}</AnalysisContext.Provider>;

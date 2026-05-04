@@ -1,5 +1,6 @@
 import type {
   CompareResponse,
+  CodeforcesAnalysis,
   GitHubAnalysis,
   LeetCodeAnalysis,
   MentorChatResponse,
@@ -7,7 +8,8 @@ import type {
   RoadmapResponse,
 } from "../types";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
+const configuredApiBase = String(import.meta.env.VITE_API_BASE_URL ?? "").trim();
+const API_BASE = (configuredApiBase || "http://localhost:8000").replace(/\/+$/, "");
 
 interface ApiErrorBody {
   detail?: {
@@ -25,6 +27,8 @@ async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE}${path}`, {
     ...init,
     headers,
+  }).catch((error: Error) => {
+    throw new Error(`Cannot reach backend API at ${API_BASE}. Check VITE_API_BASE_URL and backend CORS. (${error.message})`);
   });
   if (!response.ok) {
     const body = (await response.json().catch(() => ({}))) as ApiErrorBody;
@@ -46,6 +50,8 @@ export const api = {
     const response = await fetch(`${API_BASE}/api/resume/analyze`, {
       method: "POST",
       body: form,
+    }).catch((error: Error) => {
+      throw new Error(`Cannot reach backend API at ${API_BASE}. Check VITE_API_BASE_URL and backend CORS. (${error.message})`);
     });
     if (!response.ok) {
       const body = (await response.json().catch(() => ({}))) as ApiErrorBody;
@@ -58,7 +64,18 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ username }),
     }),
-  compare: (payload: { github: GitHubAnalysis; resume: ResumeAnalysis; leetcode?: LeetCodeAnalysis | null; target_role?: string }) =>
+  analyzeCodeforces: (username: string) =>
+    requestJson<CodeforcesAnalysis>("/api/codeforces/analyze", {
+      method: "POST",
+      body: JSON.stringify({ username }),
+    }),
+  compare: (payload: {
+    github: GitHubAnalysis;
+    resume: ResumeAnalysis;
+    leetcode?: LeetCodeAnalysis | null;
+    codeforces?: CodeforcesAnalysis | null;
+    target_role?: string;
+  }) =>
     requestJson<CompareResponse>("/api/compare", {
       method: "POST",
       body: JSON.stringify(payload),

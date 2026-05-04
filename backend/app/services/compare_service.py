@@ -101,7 +101,7 @@ class CompareService:
             missing_skills=missing,
             career_matches=career_matches,
             evidence_score=score,
-            problem_solving_signal=(request.leetcode.problem_solving_signal if request.leetcode else "unknown"),
+            problem_solving_signal=self._problem_solving_signal(request),
             insights=insights,
             recommendations=recommendations,
         )
@@ -245,6 +245,15 @@ class CompareService:
         names = {normalize_skill(skill.normalized or skill.name) for skill in request.github.skills}
         names.update(normalize_skill(skill.normalized or skill.name) for skill in request.resume.skills)
         return sorted(names)
+
+    @staticmethod
+    def _problem_solving_signal(request: CompareRequest) -> str:
+        priority = {"unknown": 0, "emerging": 1, "moderate": 2, "strong": 3}
+        signals = [
+            request.leetcode.problem_solving_signal if request.leetcode else "unknown",
+            request.codeforces.problem_solving_signal if request.codeforces else "unknown",
+        ]
+        return max(signals, key=lambda signal: priority.get(signal, 0))
 
     @staticmethod
     def _gap_cache_key(response: CompareResponse, request: CompareRequest) -> str:
