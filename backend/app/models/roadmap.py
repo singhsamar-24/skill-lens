@@ -28,3 +28,27 @@ class RoadmapResponse(BaseModel):
     milestones: list[RoadmapMilestone] = Field(default_factory=list)
     portfolio_projects: list[str] = Field(default_factory=list)
     mentor_note: str
+
+
+class MarketUserSkill(BaseModel):
+    name: str
+    weight: float = Field(default=1.0, ge=0, le=1.5)
+
+
+class MarketRoadmapRequest(BaseModel):
+    target_role: str = "Software Engineer"
+    user_skills: list[str | MarketUserSkill] = Field(default_factory=list)
+
+
+class MarketCompanyRoadmap(BaseModel):
+    company: str
+    fit: int = Field(ge=0, le=100)
+    salary: str
+    process: list[str] = Field(default_factory=list)
+    gaps: list[str] = Field(default_factory=list)
+    prep_plan: list[str] = Field(default_factory=list)
+    question_themes: list[str] = Field(default_factory=list)
+
+
+class MarketRoadmapResponse(BaseModel):
+    companies: list[MarketCompanyRoadmap] = Field(default_factory=list)

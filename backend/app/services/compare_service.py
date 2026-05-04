@@ -138,7 +138,7 @@ class CompareService:
         for key, skills in critical.items():
             if key in role_l and skill in skills:
                 return "high"
-        return "medium" if skill in {"Testing", "REST APIs", "System Design"} else "low"
+        return "medium" if skill in {"Testing", "REST APIs", "System Design Fundamentals", "Vector Databases", "Model Evaluation"} else "low"
 
     @classmethod
     def _fallback_missing_skill(cls, skill: str, role: str) -> MissingSkill:
@@ -147,20 +147,26 @@ class CompareService:
             "Caching": ["API response caching", "expensive query reuse", "session storage"],
             "PostgreSQL": ["transactional product data", "reporting queries", "relational modeling"],
             "REST APIs": ["service integrations", "frontend-backend contracts", "public API design"],
-            "System Design": ["scalability planning", "failure isolation", "technical tradeoff reviews"],
+            "System Design Fundamentals": ["scalability planning", "failure isolation", "technical tradeoff reviews"],
             "Testing": ["regression safety", "CI quality gates", "refactor confidence"],
             "Docker": ["repeatable local setup", "deployment packaging", "service isolation"],
             "FastAPI": ["Python API services", "typed request validation", "async backend endpoints"],
             "React": ["interactive dashboards", "stateful product UI", "component systems"],
             "TypeScript": ["safe frontend contracts", "large codebase refactors", "API response typing"],
+            "Vector Databases": ["semantic retrieval", "embedding search", "RAG context indexing"],
+            "Prompt Engineering": ["structured outputs", "tool-calling flows", "domain-grounded assistant behavior"],
+            "Model Evaluation": ["answer quality checks", "regression suites", "hallucination monitoring"],
         }
         impact_map = {
             "Caching": "Improves response times and reduces repeated database or API load in scalable systems.",
             "PostgreSQL": "Adds reliable data modeling, transactions, and query depth for production backends.",
             "REST APIs": "Makes your work legible as deployable service contracts instead of isolated code.",
-            "System Design": "Shows you can reason about scale, reliability, and tradeoffs beyond feature code.",
+            "System Design Fundamentals": "Shows you can reason about scale, reliability, and tradeoffs beyond feature code.",
             "Testing": "Raises trust by proving changes can be shipped without silent regressions.",
             "Docker": "Makes projects easier to run, review, and deploy in production-like environments.",
+            "Vector Databases": "Shows you can build retrieval systems that ground LLM output in real application data.",
+            "Prompt Engineering": "Improves reliability when converting fuzzy user intent into structured model behavior.",
+            "Model Evaluation": "Adds proof that AI features are measured, repeatable, and safe to improve over time.",
         }
         normalized = normalize_skill(skill)
         return MissingSkill(
@@ -369,7 +375,7 @@ class CompareService:
             "frontend development": {"React", "TypeScript", "JavaScript", "Tailwind CSS"},
             "backend development": {"Python", "FastAPI", "PostgreSQL", "REST APIs", "Docker"},
             "AI engineering": {"LLMs", "RAG", "Python", "FastAPI"},
-            "engineering fundamentals": {"Testing", "System Design", "Data Structures", "CI/CD"},
+            "engineering fundamentals": {"Testing", "System Design Fundamentals", "Data Structures", "CI/CD"},
         }
         scores: dict[str, float] = {area: 0.0 for area in areas}
         for skill in skills:

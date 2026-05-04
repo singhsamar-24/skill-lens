@@ -3,6 +3,7 @@ import type {
   CodeforcesAnalysis,
   GitHubAnalysis,
   LeetCodeAnalysis,
+  MarketRoadmapResponse,
   MentorChatResponse,
   RecruiterEvaluateResponse,
   RecruiterRankResponse,
@@ -87,6 +88,11 @@ export const api = {
     }),
   roadmap: (payload: { comparison: CompareResponse; target_role: string }) =>
     requestJson<RoadmapResponse>("/api/roadmap", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  marketRoadmap: (payload: { target_role: string; user_skills: Array<string | { name: string; weight: number }> }) =>
+    requestJson<MarketRoadmapResponse>("/api/roadmap/market", {
       method: "POST",
       body: JSON.stringify(payload),
     }),

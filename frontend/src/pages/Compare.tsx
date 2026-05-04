@@ -175,8 +175,8 @@ function MissingGroup({ skills, role }: { skills: CompareResponse["missing_skill
           <XCircle size={20} />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-ink">Role Gaps</h2>
-          <p className="mt-1 text-sm font-medium text-muted leading-relaxed">Competencies expected for <span className="text-ink font-bold">{role}</span> that are not yet visible.</p>
+          <h2 className="text-xl font-bold text-ink">Skill Gap</h2>
+          <p className="mt-1 text-sm font-medium text-muted leading-relaxed">Actual missing skills for <span className="text-ink font-bold">{role}</span>, generated from the compare engine and gap explanations.</p>
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-2">

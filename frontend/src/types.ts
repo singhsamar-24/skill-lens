@@ -136,6 +136,20 @@ export interface RoadmapResponse {
   mentor_note: string;
 }
 
+export interface MarketCompanyRoadmap {
+  company: string;
+  fit: number;
+  salary: string;
+  process: string[];
+  gaps: string[];
+  prep_plan: string[];
+  question_themes: string[];
+}
+
+export interface MarketRoadmapResponse {
+  companies: MarketCompanyRoadmap[];
+}
+
 export interface MentorChatResponse {
   routed_sources: RagSource[];
   route_reason: string;
@@ -172,6 +186,8 @@ export interface RecruiterEvaluationResult {
     claimed_unproven_skills?: ComparedSkill[];
     github_only_skills?: ComparedSkill[];
     problem_solving_signal?: string;
+    evidence_score?: number;
+    role_fit_score?: number;
   };
   role_matches: CompareResponse["career_matches"];
 }

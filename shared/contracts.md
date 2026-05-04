@@ -10,6 +10,7 @@ Frontend TypeScript interfaces in `frontend/src/types.ts` mirror those models fo
 - `CodeforcesAnalysis`
 - `CompareResponse`
 - `RoadmapResponse`
+- `MarketRoadmapResponse`
 - `MentorChatResponse`
 - `RecruiterUploadResponse`
 - `RecruiterEvaluateResponse`

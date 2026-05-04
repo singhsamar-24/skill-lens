@@ -8,7 +8,7 @@ from app.models.leetcode import LeetCodeAnalysis
 from app.models.mentor import MentorChatResponse
 from app.models.recruiter import RecruiterEvaluateResponse, RecruiterRankResponse, RecruiterUploadResponse
 from app.models.resume import ResumeAnalysis
-from app.models.roadmap import RoadmapResponse
+from app.models.roadmap import MarketRoadmapResponse, RoadmapResponse
 from app.rag.manager import RAGManager
 from app.services.recruiter_service import RecruiterService
 
@@ -36,6 +36,7 @@ def test_public_api_endpoints_with_mocked_services(monkeypatch):
     codeforces = CodeforcesAnalysis(username="dev", status="unavailable", warning="mocked")
     comparison = CompareResponse(target_role="Software Engineer", evidence_score=42, problem_solving_signal="unknown")
     roadmap = RoadmapResponse(target_role="Software Engineer", mentor_note="mocked")
+    market_roadmap = MarketRoadmapResponse(companies=[])
     mentor = MentorChatResponse(routed_sources=["learning"], answer="mocked", citations=[], snippets=[])
     recruiter_upload = RecruiterUploadResponse(uploaded=1, candidates=[])
     recruiter_evaluate = RecruiterEvaluateResponse(target_role="Software Engineer", evaluated=0, results=[])
@@ -61,6 +62,10 @@ def test_public_api_endpoints_with_mocked_services(monkeypatch):
         async def generate(self, _payload):
             return roadmap
 
+    class MarketRoadmapFake:
+        async def generate_company_roadmap(self, _payload):
+            return market_roadmap
+
     class MentorFake:
         async def chat(self, _payload):
             return mentor
@@ -81,6 +86,7 @@ def test_public_api_endpoints_with_mocked_services(monkeypatch):
         app.state.leetcode_service = LeetCodeFake()
         app.state.codeforces_service = CodeforcesFake()
         app.state.roadmap_service = RoadmapFake()
+        app.state.market_roadmap_service = MarketRoadmapFake()
         app.state.mentor_service = MentorFake()
         app.state.recruiter_service = RecruiterFake()
 
@@ -93,6 +99,7 @@ def test_public_api_endpoints_with_mocked_services(monkeypatch):
         assert "evidence_score" in compare_body
 
         assert client.post("/api/roadmap", json={"comparison": comparison.model_dump(), "target_role": "Software Engineer"}).json()["mentor_note"] == "mocked"
+        assert client.post("/api/roadmap/market", json={"target_role": "Backend Engineer", "user_skills": ["Python"]}).json()["companies"] == []
         assert client.post("/api/mentor/chat", json={"message": "how do I learn testing?"}).json()["answer"] == "mocked"
         assert client.post("/api/recruiter/upload", files=[("files", ("resume.pdf", b"%PDF", "application/pdf"))]).json()["uploaded"] == 1
         assert client.post("/api/recruiter/evaluate", json={"target_role": "Software Engineer"}).json()["evaluated"] == 0

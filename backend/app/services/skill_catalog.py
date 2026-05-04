@@ -20,21 +20,24 @@ SKILL_KEYWORDS: dict[str, list[str]] = {
     "Testing": ["pytest", "vitest", "jest", "playwright", "testing-library"],
     "RAG": ["rag", "retrieval augmented generation", "faiss", "embedding"],
     "LLMs": ["llm", "groq", "openai", "langchain", "agent"],
+    "Vector Databases": ["vector database", "vector db", "faiss", "pinecone", "chroma", "qdrant", "embedding index"],
+    "Prompt Engineering": ["prompt engineering", "prompt template", "few-shot", "tool calling", "structured output"],
+    "Model Evaluation": ["eval", "evaluation", "benchmark", "hallucination", "groundedness"],
     "Data Structures": ["leetcode", "algorithm", "graph", "dynamic programming"],
     "REST APIs": ["rest", "api", "fastapi", "express", "endpoint"],
-    "System Design": ["architecture", "scalable", "distributed", "cache", "queue"],
+    "System Design Fundamentals": ["architecture", "scalable", "distributed", "cache", "queue"],
 }
 
 
 ROLE_SKILLS: dict[str, list[str]] = {
     "frontend": ["React", "TypeScript", "JavaScript", "Testing", "Tailwind CSS", "REST APIs"],
     "frontend engineer": ["React", "TypeScript", "JavaScript", "Testing", "Tailwind CSS", "REST APIs"],
-    "backend": ["Python", "FastAPI", "PostgreSQL", "Docker", "Testing", "REST APIs", "System Design"],
-    "backend engineer": ["Python", "FastAPI", "PostgreSQL", "Docker", "Testing", "REST APIs", "System Design"],
-    "full stack": ["React", "TypeScript", "Python", "FastAPI", "PostgreSQL", "Docker", "Testing", "REST APIs"],
-    "full stack engineer": ["React", "TypeScript", "Python", "FastAPI", "PostgreSQL", "Docker", "Testing", "REST APIs"],
-    "ai engineer": ["Python", "LLMs", "RAG", "FastAPI", "Testing", "System Design", "Docker"],
-    "software engineer": ["Python", "JavaScript", "Testing", "REST APIs", "System Design", "Data Structures"],
+    "backend": ["Python", "FastAPI", "PostgreSQL", "Redis", "Docker", "REST APIs", "System Design Fundamentals"],
+    "backend engineer": ["Python", "FastAPI", "PostgreSQL", "Redis", "Docker", "REST APIs", "System Design Fundamentals"],
+    "full stack": ["React", "TypeScript", "Node.js", "Python", "PostgreSQL", "REST APIs", "Docker"],
+    "full stack engineer": ["React", "TypeScript", "Node.js", "Python", "PostgreSQL", "REST APIs", "Docker"],
+    "ai engineer": ["Python", "LLMs", "RAG", "Vector Databases", "Prompt Engineering", "Model Evaluation", "FastAPI"],
+    "software engineer": ["Python", "JavaScript", "REST APIs", "Data Structures", "Databases", "System Design Fundamentals"],
 }
 
 

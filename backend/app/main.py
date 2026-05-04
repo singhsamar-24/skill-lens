@@ -18,6 +18,7 @@ from app.services.codeforces_service import CodeforcesService
 from app.services.github_service import GitHubService
 from app.services.groq_service import GroqService
 from app.services.leetcode_service import LeetCodeService
+from app.services.market_roadmap_service import MarketRoadmapService
 from app.services.mentor_service import MentorService
 from app.services.recruiter_service import RecruiterService
 from app.services.resume_service import ResumeService
@@ -50,6 +51,7 @@ async def lifespan(app: FastAPI):
     app.state.codeforces_service = CodeforcesService(settings)
     app.state.compare_service = compare_service
     app.state.roadmap_service = RoadmapService(groq_service, rag)
+    app.state.market_roadmap_service = MarketRoadmapService(groq_service)
     app.state.mentor_service = MentorService(rag, groq_service)
     app.state.recruiter_service = RecruiterService(db_session_factory, resume_service, compare_service, github_service)
     try:

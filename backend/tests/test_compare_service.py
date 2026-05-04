@@ -53,6 +53,24 @@ def test_compare_returns_explainable_gaps_and_role_matches_for_partial_profile()
     assert result.career_matches[0].reason
 
 
+def test_ai_engineer_gaps_prioritize_ai_specific_skills_over_generic_fundamentals():
+    github = GitHubAnalysis(username="dev", profile_url="https://github.com/dev", public_repos=0)
+    resume = ResumeAnalysis(
+        file_name="resume.pdf",
+        text_preview="Python FastAPI backend developer",
+        skills=[
+            ResumeSkill(name="Python", normalized="Python", classification="project_backed", confidence=0.9, evidence=["Built APIs"]),
+            ResumeSkill(name="FastAPI", normalized="FastAPI", classification="project_backed", confidence=0.8, evidence=["Built APIs"]),
+        ],
+    )
+
+    result = CompareService().compare(CompareRequest(github=github, resume=resume, target_role="AI Engineer"))
+
+    missing = [skill.name for skill in result.missing_skills]
+    assert missing[:4] == ["LLMs", "RAG", "Vector Databases", "Prompt Engineering"]
+    assert "Testing" not in missing
+
+
 def test_compare_handles_empty_resume_and_empty_github_without_crashing():
     github = GitHubAnalysis(username="dev", profile_url="https://github.com/dev", public_repos=0)
     resume = ResumeAnalysis(file_name="resume.pdf", text_preview="")

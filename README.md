@@ -6,7 +6,7 @@ It also includes a recruiter dashboard for bulk resume upload, PostgreSQL-backed
 ## Stack
 
 - Frontend: React 19, TypeScript, Vite, Tailwind CSS, Framer Motion
-- Backend: FastAPI, Groq `llama-3.3-70b-versatile`, GitHub REST, LeetCode GraphQL, Codeforces API, FAISS, sentence-transformers
+- Backend: FastAPI, Groq `llama-3.3-70b-versatile`, GitHub REST, LeetCode GraphQL, Codeforces API, lexical RAG with optional semantic RAG hooks
 
 ## Run Backend
 

@@ -1,0 +1,202 @@
+{
+  "Backend Engineer": [
+    {
+      "company": "Amazon",
+      "salary_range": "18-45 LPA",
+      "hiring_process": ["OA", "DSA rounds", "LLD/HLD", "Bar raiser", "HR"],
+      "question_style": ["arrays and hashing", "trees and graphs", "service design", "scalability tradeoffs", "behavioral ownership"],
+      "must_have_skills": ["Java", "Python", "REST APIs", "System Design", "Databases", "Testing", "Caching"],
+      "prep_tips": ["Solve 180-250 DSA problems with timed practice", "Practice leadership-principle stories with metrics", "Design order, notification, and inventory services"]
+    },
+    {
+      "company": "Razorpay",
+      "salary_range": "18-42 LPA",
+      "hiring_process": ["OA", "DSA", "Backend machine coding", "System design", "HM/HR"],
+      "question_style": ["payment workflows", "idempotency", "database transactions", "API contracts", "queues and retries"],
+      "must_have_skills": ["Python", "Java", "REST APIs", "PostgreSQL", "System Design", "Redis", "Testing"],
+      "prep_tips": ["Build a payment ledger or wallet API", "Understand idempotency keys and reconciliation", "Practice concurrency and transaction isolation questions"]
+    },
+    {
+      "company": "Flipkart",
+      "salary_range": "16-38 LPA",
+      "hiring_process": ["OA", "DSA rounds", "LLD", "HLD", "Managerial"],
+      "question_style": ["e-commerce scale", "inventory and catalog design", "caching", "graphs", "dynamic programming"],
+      "must_have_skills": ["Java", "Python", "REST APIs", "System Design", "Caching", "Databases", "Docker"],
+      "prep_tips": ["Design cart, catalog, and flash-sale systems", "Prepare cache invalidation and sharding tradeoffs", "Keep 2 backend projects ready for deep dive"]
+    },
+    {
+      "company": "Swiggy",
+      "salary_range": "14-35 LPA",
+      "hiring_process": ["OA", "DSA", "Machine coding", "System design", "HR"],
+      "question_style": ["location-based matching", "queues", "rate limiting", "low-latency APIs", "LLD"],
+      "must_have_skills": ["Java", "Python", "REST APIs", "Redis", "System Design", "PostgreSQL", "Monitoring"],
+      "prep_tips": ["Design delivery assignment or restaurant search", "Practice geospatial and queue-based workflows", "Add observability to backend portfolio projects"]
+    },
+    {
+      "company": "Zerodha",
+      "salary_range": "18-40 LPA",
+      "hiring_process": ["Problem solving", "Backend deep dive", "System design", "Culture discussion"],
+      "question_style": ["reliability", "market-data ingestion", "low-latency APIs", "databases", "clean code"],
+      "must_have_skills": ["Go", "Python", "PostgreSQL", "System Design", "Caching", "Testing", "Monitoring"],
+      "prep_tips": ["Build an event ingestion or trading journal API", "Know latency, backpressure, and failure handling", "Show clean, maintainable backend code"]
+    },
+    {
+      "company": "Meesho",
+      "salary_range": "12-32 LPA",
+      "hiring_process": ["OA", "DSA", "LLD", "HLD", "HR"],
+      "question_style": ["marketplace systems", "ranking and feeds", "database modeling", "API design", "DP"],
+      "must_have_skills": ["Java", "Python", "REST APIs", "System Design", "Databases", "Testing", "Kafka"],
+      "prep_tips": ["Design seller catalog and recommendation feed APIs", "Practice LLD for rate limiter and notification service", "Prepare DSA around graphs and DP"]
+    }
+  ],
+  "Frontend Engineer": [
+    {
+      "company": "Razorpay",
+      "salary_range": "14-34 LPA",
+      "hiring_process": ["JS fundamentals", "Frontend machine coding", "React deep dive", "System design", "HR"],
+      "question_style": ["React state", "forms", "accessibility", "performance", "frontend architecture"],
+      "must_have_skills": ["JavaScript", "TypeScript", "React", "REST APIs", "Testing", "Accessibility", "Performance"],
+      "prep_tips": ["Build a payments dashboard with complex forms", "Practice debouncing, validation, and API states", "Prepare React rendering and memoization explanations"]
+    },
+    {
+      "company": "Flipkart",
+      "salary_range": "12-30 LPA",
+      "hiring_process": ["OA", "JS/DSA", "Machine coding", "Frontend design", "Managerial"],
+      "question_style": ["product listing UI", "cart flows", "state management", "web performance", "responsive UI"],
+      "must_have_skills": ["JavaScript", "TypeScript", "React", "REST APIs", "Testing", "Performance", "Tailwind CSS"],
+      "prep_tips": ["Build catalog/search/cart screens", "Measure and improve Core Web Vitals", "Practice component composition and state isolation"]
+    },
+    {
+      "company": "Swiggy",
+      "salary_range": "12-28 LPA",
+      "hiring_process": ["JS round", "React coding", "UI machine coding", "Architecture", "HR"],
+      "question_style": ["search UX", "maps/list interactions", "real-time states", "accessibility", "testing"],
+      "must_have_skills": ["JavaScript", "React", "TypeScript", "REST APIs", "Accessibility", "Testing", "Performance"],
+      "prep_tips": ["Build restaurant search with filters and skeleton states", "Practice infinite scroll and client caching", "Know keyboard navigation and ARIA basics"]
+    },
+    {
+      "company": "Amazon",
+      "salary_range": "16-38 LPA",
+      "hiring_process": ["OA", "DSA", "Frontend coding", "Design discussion", "Bar raiser"],
+      "question_style": ["DSA basics", "DOM events", "component design", "performance", "behavioral ownership"],
+      "must_have_skills": ["JavaScript", "TypeScript", "React", "Data Structures", "Testing", "Performance", "Accessibility"],
+      "prep_tips": ["Solve 120-180 DSA problems", "Practice component APIs and browser fundamentals", "Prepare metrics-backed project stories"]
+    },
+    {
+      "company": "CRED",
+      "salary_range": "16-36 LPA",
+      "hiring_process": ["Portfolio review", "Frontend craft round", "React architecture", "Culture"],
+      "question_style": ["visual polish", "animation", "component systems", "performance", "TypeScript"],
+      "must_have_skills": ["TypeScript", "React", "JavaScript", "Performance", "Testing", "Design Systems", "Accessibility"],
+      "prep_tips": ["Create a polished, responsive product UI", "Show design-system thinking", "Be ready to explain animation and performance tradeoffs"]
+    },
+    {
+      "company": "BrowserStack",
+      "salary_range": "14-32 LPA",
+      "hiring_process": ["JS fundamentals", "Machine coding", "React round", "System design", "HR"],
+      "question_style": ["testing tools", "browser APIs", "state machines", "performance debugging", "component testing"],
+      "must_have_skills": ["JavaScript", "TypeScript", "React", "Testing", "Browser APIs", "REST APIs", "Performance"],
+      "prep_tips": ["Build a test reporting dashboard", "Know browser storage and event loop", "Practice testing-library and Playwright flows"]
+    }
+  ],
+  "Full Stack Developer": [
+    {
+      "company": "Zoho",
+      "salary_range": "8-22 LPA",
+      "hiring_process": ["Aptitude/OA", "Coding", "Advanced programming", "Technical HR", "HR"],
+      "question_style": ["problem solving", "database design", "full-stack CRUD", "JavaScript", "clean code"],
+      "must_have_skills": ["JavaScript", "React", "REST APIs", "Databases", "Testing", "Java", "SQL"],
+      "prep_tips": ["Practice Zoho-style multi-round coding", "Build a CRUD app with relational schema", "Prepare SQL joins and normalization"]
+    },
+    {
+      "company": "Freshworks",
+      "salary_range": "12-28 LPA",
+      "hiring_process": ["OA", "DSA", "Full-stack machine coding", "System design", "Managerial"],
+      "question_style": ["SaaS workflows", "ticketing systems", "API design", "React state", "database modeling"],
+      "must_have_skills": ["React", "JavaScript", "Node.js", "REST APIs", "PostgreSQL", "Testing", "System Design"],
+      "prep_tips": ["Build helpdesk or CRM workflows", "Practice auth, pagination, and audit logs", "Show clean API and UI state handling"]
+    },
+    {
+      "company": "Swiggy",
+      "salary_range": "14-32 LPA",
+      "hiring_process": ["OA", "DSA", "Machine coding", "HLD", "HR"],
+      "question_style": ["consumer flows", "backend APIs", "React UI", "caching", "queues"],
+      "must_have_skills": ["React", "JavaScript", "Python", "REST APIs", "PostgreSQL", "Redis", "System Design"],
+      "prep_tips": ["Build restaurant ordering end-to-end", "Document API contracts and failure states", "Practice cart, search, and checkout system design"]
+    },
+    {
+      "company": "Meesho",
+      "salary_range": "12-30 LPA",
+      "hiring_process": ["OA", "DSA", "Full-stack coding", "Design", "HR"],
+      "question_style": ["marketplace features", "catalog search", "React dashboards", "database queries", "LLD"],
+      "must_have_skills": ["React", "TypeScript", "REST APIs", "Databases", "Testing", "System Design", "Docker"],
+      "prep_tips": ["Build seller dashboard or catalog manager", "Add tests and deployment docs", "Prepare DSA and API design rounds"]
+    },
+    {
+      "company": "Atlassian India",
+      "salary_range": "24-55 LPA",
+      "hiring_process": ["OA", "Coding", "System design", "Values interview", "Managerial"],
+      "question_style": ["collaboration products", "frontend architecture", "backend APIs", "scalability", "behavioral"],
+      "must_have_skills": ["TypeScript", "React", "Java", "REST APIs", "System Design", "Testing", "Databases"],
+      "prep_tips": ["Build collaborative project-management features", "Practice design docs and tradeoffs", "Prepare teamwork and ownership examples"]
+    },
+    {
+      "company": "PhonePe",
+      "salary_range": "18-42 LPA",
+      "hiring_process": ["OA", "DSA", "Machine coding", "System design", "HR"],
+      "question_style": ["transaction systems", "dashboards", "API reliability", "database consistency", "security basics"],
+      "must_have_skills": ["React", "Java", "REST APIs", "PostgreSQL", "System Design", "Testing", "Caching"],
+      "prep_tips": ["Build wallet/admin flows", "Understand idempotency and reconciliation", "Practice backend consistency plus frontend state"]
+    }
+  ],
+  "Mobile/App Developer": [
+    {
+      "company": "Swiggy",
+      "salary_range": "12-32 LPA",
+      "hiring_process": ["DSA", "Mobile coding", "App architecture", "System design", "HR"],
+      "question_style": ["lists and search", "offline states", "location features", "performance", "architecture"],
+      "must_have_skills": ["Kotlin", "Android", "REST APIs", "App Architecture", "Testing", "Performance", "Caching"],
+      "prep_tips": ["Build food ordering app flows", "Practice Recycler/List performance", "Know offline caching and location permissions"]
+    },
+    {
+      "company": "Flipkart",
+      "salary_range": "14-34 LPA",
+      "hiring_process": ["OA", "DSA", "Android/iOS round", "Architecture", "Managerial"],
+      "question_style": ["catalog UI", "cart and checkout", "networking", "memory", "modular architecture"],
+      "must_have_skills": ["Kotlin", "Android", "REST APIs", "Testing", "Performance", "App Architecture", "Databases"],
+      "prep_tips": ["Build catalog/cart app screens", "Practice app modularization", "Prepare image loading and caching tradeoffs"]
+    },
+    {
+      "company": "Razorpay",
+      "salary_range": "14-36 LPA",
+      "hiring_process": ["Coding", "Mobile SDK design", "Architecture", "Security discussion", "HR"],
+      "question_style": ["SDK reliability", "payments UX", "security", "network failures", "state management"],
+      "must_have_skills": ["Kotlin", "Swift", "REST APIs", "App Architecture", "Testing", "Security", "Performance"],
+      "prep_tips": ["Build a checkout SDK demo", "Understand retry, idempotency, and secure storage", "Prepare mobile architecture diagrams"]
+    },
+    {
+      "company": "PhonePe",
+      "salary_range": "16-40 LPA",
+      "hiring_process": ["OA", "DSA", "Mobile coding", "Architecture", "HR"],
+      "question_style": ["transaction flows", "low-latency UX", "crash handling", "offline sync", "security"],
+      "must_have_skills": ["Kotlin", "Android", "REST APIs", "Testing", "Security", "Performance", "Monitoring"],
+      "prep_tips": ["Build UPI-like transaction history flows", "Know crash reporting and secure storage", "Practice concurrency and lifecycle issues"]
+    },
+    {
+      "company": "Dream11",
+      "salary_range": "18-42 LPA",
+      "hiring_process": ["DSA", "Mobile feature round", "Architecture", "Scale discussion", "HR"],
+      "question_style": ["real-time updates", "animations", "performance", "state management", "testing"],
+      "must_have_skills": ["Kotlin", "Swift", "REST APIs", "Performance", "Testing", "App Architecture", "Caching"],
+      "prep_tips": ["Build live score or contest app screens", "Practice real-time update handling", "Show performance profiling examples"]
+    },
+    {
+      "company": "Zomato",
+      "salary_range": "12-34 LPA",
+      "hiring_process": ["DSA", "Mobile coding", "Architecture", "Product discussion", "HR"],
+      "question_style": ["maps and lists", "search UX", "offline/cache", "networking", "app performance"],
+      "must_have_skills": ["Kotlin", "Android", "REST APIs", "App Architecture", "Performance", "Testing", "Caching"],
+      "prep_tips": ["Build restaurant discovery and order tracking flows", "Practice permissions and location edge cases", "Prepare app startup and memory optimization"]
+    }
+  ]
+}

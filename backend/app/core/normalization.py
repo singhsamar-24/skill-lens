@@ -45,6 +45,10 @@ ALIASES = {
     "data pipeline": "Data Pipelines",
     "data pipelines": "Data Pipelines",
     "monitoring": "Monitoring",
+    "prompt engineering": "Prompt Engineering",
+    "model evaluation": "Model Evaluation",
+    "system design": "System Design Fundamentals",
+    "system design fundamentals": "System Design Fundamentals",
 }
 
 

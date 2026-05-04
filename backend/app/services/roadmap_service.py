@@ -172,6 +172,21 @@ class RoadmapService:
                     "A deployed or runnable service slice that proves the design is executable.",
                 ],
             },
+            "System Design Fundamentals": {
+                "skill": "Scalable service architecture",
+                "title": "Design and ship a scalable service slice",
+                "proof": "architecture diagrams plus a working vertical slice",
+                "project": "Scalable service case study with API boundaries, storage choices, caching, and failure-mode notes",
+                "tasks": [
+                    "Define the core entities, API contracts, and data flow for one production use case.",
+                    "Implement a working vertical slice with logging, validation, and error handling.",
+                    "Document tradeoffs for scale, latency, reliability, and operational failure modes.",
+                ],
+                "outcomes": [
+                    "A README that explains architecture decisions like an engineering design review.",
+                    "A deployed or runnable service slice that proves the design is executable.",
+                ],
+            },
             "REST APIs": {
                 "skill": "Production REST API design",
                 "title": "Ship a typed API contract",
@@ -323,7 +338,7 @@ class RoadmapService:
 
     @staticmethod
     def _has_repeated_generic_tracks(response: RoadmapResponse) -> bool:
-        generic = {"Testing", "System Design"}
+        generic = {"Testing", "System Design", "System Design Fundamentals"}
         hits = [
             title
             for title in RoadmapService._roadmap_text(response)
