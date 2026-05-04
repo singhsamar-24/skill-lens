@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from fastapi import UploadFile
-from sqlalchemy import desc, select
+from sqlalchemy import delete, desc, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from sqlalchemy.orm import selectinload
@@ -62,6 +62,7 @@ class RecruiterService:
         session_factory = self._require_db()
         uploaded: list[UploadedCandidate] = []
         async with session_factory() as session:
+            await session.execute(delete(Candidate))
             for file in files:
                 filename = file.filename or "resume.pdf"
                 content = await file.read()

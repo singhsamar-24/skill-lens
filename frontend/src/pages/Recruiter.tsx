@@ -104,7 +104,7 @@ export function Recruiter() {
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.4fr]">
         <div className="space-y-6">
           <Panel>
-            <SectionTitle kicker="Upload" title="Resume Batch" description="PDF resumes are parsed once, stored, and reused for ranking." />
+            <SectionTitle kicker="Upload" title="Resume Batch" description="Each upload replaces the active candidate batch used for ranking." />
             <label className="flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 px-6 text-center transition hover:border-accent hover:bg-white">
               <FileUp className="text-accent" size={30} />
               <span className="mt-3 text-sm font-bold text-ink">Choose PDF resumes</span>
