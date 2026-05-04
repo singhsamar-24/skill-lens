@@ -110,3 +110,5 @@ temp/
 # ==============================
 
 docker-compose.override.yml
+
+.vercel
