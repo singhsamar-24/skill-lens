@@ -1,16 +1,53 @@
 # SkillLens
 
-SkillLens is a production-grade hackathon MVP that compares claimed resume skills against real GitHub evidence, optional LeetCode and Codeforces data, and a multi-source RAG mentor system.
-It also includes a recruiter dashboard for bulk resume upload, PostgreSQL-backed candidate storage, target-role evaluation, and ranked candidate shortlists.
+SkillLens is a full-stack candidate verification platform. It compares skills claimed in a resume with real evidence from GitHub repositories, optional LeetCode and Codeforces signals, role-specific skill expectations, and a local RAG mentor system.
 
-## Stack
+The project is built as a production-style hackathon MVP with a React dashboard, FastAPI backend, recruiter workflows, roadmap generation, and deployment-ready configuration for Vercel plus Railway or another Python host.
 
-- Frontend: React 19, TypeScript, Vite, Tailwind CSS, Framer Motion
-- Backend: FastAPI, Groq `llama-3.3-70b-versatile`, GitHub REST, LeetCode GraphQL, Codeforces API, lexical RAG with optional semantic RAG hooks
+## What It Does
 
-## Run Backend
+- Verifies resume skills against public GitHub repository evidence.
+- Extracts resume skills, projects, and confidence signals from uploaded PDF resumes.
+- Adds optional competitive programming context from LeetCode and Codeforces.
+- Computes a trust score, skill gaps, role matches, and personalized recommendations.
+- Generates learning roadmaps for target roles.
+- Provides a mentor chat backed by local Alumni, Learning, and Job RAG sources.
+- Supports recruiter bulk resume upload, candidate evaluation, ranking, and persistence when PostgreSQL is configured.
 
-```bash
+## Documentation
+
+- [Architecture](docs/ARCHITECTURE.md): system design, data flow, scoring, RAG, and module responsibilities.
+- [API Reference](docs/API_REFERENCE.md): backend endpoints, request bodies, response shapes, and error model.
+- [Deployment Guide](docs/DEPLOYMENT.md): Vercel frontend, Railway backend, environment variables, and production checks.
+- [Testing Guide](docs/TESTING.md): backend tests, frontend builds, manual checks, and release checklist.
+- [Project Report](docs/PROJECT_REPORT.md): problem statement, solution, features, impact, limitations, and future scope.
+- [Shared Contracts](shared/contracts.md): contract ownership notes for backend Pydantic models and frontend TypeScript types.
+
+## Tech Stack
+
+- Frontend: React 19, TypeScript, Vite, Tailwind CSS, Framer Motion, lucide-react, React Router.
+- Backend: FastAPI, Pydantic, Groq `llama-3.3-70b-versatile`, GitHub REST, LeetCode GraphQL, Codeforces API.
+- RAG: local Markdown corpora, lexical fallback retrieval, optional semantic retrieval hooks.
+- Persistence: optional PostgreSQL for recruiter candidate and evaluation storage.
+- Deployment: Vercel for frontend, Railway or compatible Python host for backend.
+
+## Repository Layout
+
+```text
+skill-lens/
+  backend/              FastAPI app, services, Pydantic models, tests, data
+  frontend/             React/Vite dashboard and product UI
+  shared/               Cross-app contract notes
+  docs/                 Detailed project documentation
+  plan.md               Original MVP implementation plan
+  README.md             Project overview and quick start
+```
+
+## Local Setup
+
+### Backend
+
+```powershell
 cd backend
 python -m venv .venv
 .venv\Scripts\activate
@@ -19,23 +56,39 @@ copy .env.example .env
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Set `GROQ_API_KEY` for resume parsing, roadmap generation, and mentor chat. Set `GITHUB_TOKEN` to improve GitHub API rate limits.
-Set `DATABASE_URL` to enable the recruiter dashboard persistence layer. The backend auto-creates and seeds recruiter tables on startup.
+Required for LLM-backed features:
 
-## Run Frontend
+```env
+GROQ_API_KEY=your_groq_key
+```
 
-```bash
+Recommended:
+
+```env
+GITHUB_TOKEN=your_github_token
+FRONTEND_ORIGIN=http://localhost:5173
+DATABASE_URL=postgresql://user:password@host:port/db
+```
+
+### Frontend
+
+```powershell
 cd frontend
 npm install
-copy .env.example .env
 npm run dev
 ```
 
 Open `http://localhost:5173`.
 
-## Test
+For deployed or non-local backend usage, set:
 
-```bash
+```env
+VITE_API_BASE_URL=https://your-backend-url
+```
+
+## Validation
+
+```powershell
 cd backend
 pytest
 
@@ -43,13 +96,13 @@ cd ../frontend
 npm run build
 ```
 
-## Deployment
+The frontend build runs TypeScript project references and a production Vite bundle.
 
-- Frontend: deploy `/frontend` to Vercel with `VITE_API_BASE_URL` pointing to the backend.
-- Backend: deploy `/backend` to Render or Railway using:
+## Deployment Summary
 
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port $PORT
-```
+- Frontend is deployed from the existing Vercel `skill-lens` project.
+- Backend can be deployed on Railway from `/backend`.
+- Production frontend must point `VITE_API_BASE_URL` to the backend API.
+- Backend CORS must allow the frontend production domain via `FRONTEND_ORIGIN`.
 
-Configure production CORS with `FRONTEND_ORIGIN=https://your-vercel-domain`.
+See [Deployment Guide](docs/DEPLOYMENT.md) for exact steps.
