@@ -10,6 +10,7 @@ from app.models.recruiter import RecruiterEvaluateResponse, RecruiterRankRespons
 from app.models.resume import ResumeAnalysis
 from app.models.roadmap import RoadmapResponse
 from app.rag.manager import RAGManager
+from app.services.recruiter_service import RecruiterService
 
 
 def test_health_endpoint(monkeypatch):
@@ -96,3 +97,32 @@ def test_public_api_endpoints_with_mocked_services(monkeypatch):
         assert client.post("/api/recruiter/upload", files=[("files", ("resume.pdf", b"%PDF", "application/pdf"))]).json()["uploaded"] == 1
         assert client.post("/api/recruiter/evaluate", json={"target_role": "Software Engineer"}).json()["evaluated"] == 0
         assert client.get("/api/recruiter/rank?target_role=Software%20Engineer").json()["target_role"] == "Software Engineer"
+
+
+def test_recruiter_score_uses_selected_role_fit_not_only_github_evidence():
+    comparison = CompareResponse(
+        target_role="AI Engineer",
+        evidence_score=0,
+        career_matches=[
+            {
+                "role": "AI Engineer",
+                "match": 29,
+                "salary": "12-30 LPA",
+                "reason": "Python is visible, but LLMs and RAG are missing.",
+                "matched_skills": ["Python"],
+                "missing_skills": ["LLMs", "RAG"],
+            }
+        ],
+    )
+
+    class CandidateStub:
+        id = 1
+        name = "Arjun Singh"
+        email = None
+        github_username = None
+
+    result = RecruiterService._result_from_comparison(CandidateStub(), comparison)
+
+    assert result.match_score == 29
+    assert result.explanations["evidence_score"] == 0
+    assert result.explanations["role_fit_score"] == 29

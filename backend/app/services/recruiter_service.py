@@ -191,16 +191,23 @@ class RecruiterService:
 
     @staticmethod
     def _result_from_comparison(candidate: Candidate, comparison: CompareResponse) -> RecruiterEvaluationResult:
+        target_role_match = next(
+            (match for match in comparison.career_matches if match.role.lower() == comparison.target_role.lower()),
+            None,
+        )
+        fit_score = target_role_match.match if target_role_match else comparison.evidence_score
         return RecruiterEvaluationResult(
             candidate_id=candidate.id,
             name=candidate.name,
             email=candidate.email,
             github_username=candidate.github_username,
             target_role=comparison.target_role,
-            match_score=comparison.evidence_score,
+            match_score=max(fit_score, comparison.evidence_score),
             verified_skills=[skill.model_dump(mode="json") for skill in comparison.verified_skills],
             missing_skills=[skill.model_dump(mode="json") for skill in comparison.missing_skills],
             explanations={
+                "evidence_score": comparison.evidence_score,
+                "role_fit_score": fit_score,
                 "insights": [item.model_dump(mode="json") for item in comparison.insights],
                 "recommendations": comparison.recommendations,
                 "claimed_unproven_skills": [skill.model_dump(mode="json") for skill in comparison.claimed_unproven_skills],

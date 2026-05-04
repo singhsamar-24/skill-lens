@@ -161,7 +161,7 @@ export function Recruiter() {
           <SectionTitle
             kicker="Ranking"
             title="Candidate Board"
-            description="Sorted by evidence score, with verified strengths and missing role-critical skills."
+            description="Sorted by selected-role fit, with verified strengths and missing role-critical skills."
             action={ranked.length ? <StatusPill tone="good">{ranked.length} ranked</StatusPill> : <StatusPill>Pending</StatusPill>}
           />
           {ranked.length ? (
