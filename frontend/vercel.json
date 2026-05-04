@@ -3,6 +3,14 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://skill-lens-backend-production.up.railway.app/api/:path*"
+    },
+    {
+      "source": "/health",
+      "destination": "https://skill-lens-backend-production.up.railway.app/health"
+    },
     { "source": "/(.*)", "destination": "/" }
   ]
 }

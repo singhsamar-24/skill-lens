@@ -15,6 +15,7 @@ from app.core.settings import Settings
 from app.models.common import ResumeSkill, WarningMessage
 from app.models.resume import ResumeAnalysis, ResumeProject
 from app.services.groq_service import GroqService
+from app.services.skill_catalog import keyword_skill_hits
 
 
 class _LLMResumeSkill(BaseModel):
@@ -62,7 +63,17 @@ class ResumeService:
         if len(text.strip()) < 40:
             raise bad_request("resume_empty", "Could not extract enough text from the resume PDF.")
 
-        parsed = await self._parse_with_groq(text)
+        try:
+            parsed = await self._parse_with_groq(text)
+            warnings = [WarningMessage(code="resume_llm_warning", message=warning) for warning in parsed.warnings]
+        except Exception:
+            parsed = self._parse_with_keywords(text)
+            warnings = [
+                WarningMessage(
+                    code="resume_fallback_parser",
+                    message="AI resume parsing was temporarily unavailable, so SkillLens used keyword-based extraction.",
+                )
+            ]
         analysis = ResumeAnalysis(
             file_name=filename,
             text_preview=text[:500],
@@ -84,10 +95,32 @@ class ResumeService:
                 )
                 for project in parsed.projects
             ],
-            warnings=[WarningMessage(code="resume_llm_warning", message=warning) for warning in parsed.warnings],
+            warnings=warnings,
         )
         cache.set(cache_key, analysis, ttl_seconds=15 * 60)
         return analysis
+
+    @staticmethod
+    def _parse_with_keywords(text: str) -> _LLMResumeResponse:
+        skills = [
+            _LLMResumeSkill(
+                name=skill,
+                classification="claimed",
+                confidence=0.45,
+                evidence=[f"{skill} appears in the resume text."],
+            )
+            for skill in sorted(keyword_skill_hits(text))
+        ]
+        if not skills:
+            skills = [
+                _LLMResumeSkill(
+                    name="General Engineering",
+                    classification="weak",
+                    confidence=0.25,
+                    evidence=["Resume text was readable, but no catalogued technical skills were detected."],
+                )
+            ]
+        return _LLMResumeResponse(skills=skills[:18], projects=[], warnings=[])
 
     @staticmethod
     def _extract_pdf_text(content: bytes) -> str:

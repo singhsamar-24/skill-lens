@@ -18,3 +18,12 @@ async def test_resume_empty_pdf_rejected():
         await service.analyze_upload(upload)
 
     assert error.value.detail["code"] == "resume_empty"
+
+
+@pytest.mark.asyncio
+async def test_resume_groq_failure_uses_keyword_fallback():
+    text = "Python FastAPI React TypeScript REST API testing project"
+    parsed = ResumeService._parse_with_keywords(text)
+
+    assert any(skill.name == "Python" for skill in parsed.skills)
+    assert any(skill.name == "React" for skill in parsed.skills)

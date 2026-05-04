@@ -9,7 +9,7 @@ import type {
 } from "../types";
 
 const configuredApiBase = String(import.meta.env.VITE_API_BASE_URL ?? "").trim();
-const API_BASE = (configuredApiBase || "http://localhost:8000").replace(/\/+$/, "");
+const API_BASE = (configuredApiBase || (import.meta.env.DEV ? "http://localhost:8000" : "")).replace(/\/+$/, "");
 
 interface ApiErrorBody {
   detail?: {
@@ -28,7 +28,8 @@ async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
     ...init,
     headers,
   }).catch((error: Error) => {
-    throw new Error(`Cannot reach backend API at ${API_BASE}. Check VITE_API_BASE_URL and backend CORS. (${error.message})`);
+    const target = API_BASE || "the same-origin API proxy";
+    throw new Error(`Cannot reach backend API at ${target}. Check the backend deployment. (${error.message})`);
   });
   if (!response.ok) {
     const body = (await response.json().catch(() => ({}))) as ApiErrorBody;
@@ -51,7 +52,8 @@ export const api = {
       method: "POST",
       body: form,
     }).catch((error: Error) => {
-      throw new Error(`Cannot reach backend API at ${API_BASE}. Check VITE_API_BASE_URL and backend CORS. (${error.message})`);
+      const target = API_BASE || "the same-origin API proxy";
+      throw new Error(`Cannot reach backend API at ${target}. Check the backend deployment. (${error.message})`);
     });
     if (!response.ok) {
       const body = (await response.json().catch(() => ({}))) as ApiErrorBody;
